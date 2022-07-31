@@ -1,0 +1,37 @@
+# import torch
+# torch.__version__
+
+# from transformers import pipeline
+# import pandas as pd
+# tqa = pipeline(task="table-question-answering", 
+#                model="google/tapas-base-finetuned-wtq")
+
+
+import mysql.connector as sql
+import pandas as pd
+import matplotlib.pyplot as plt
+import random
+
+c=sql.connect(host='localhost',
+    port=3306,
+    database='sakila',
+    user='root',
+    password ='9758'
+)
+
+dtf = pd.read_sql(' SELECT name AS category, count(*) AS count_ \
+  FROM film AS F \
+  JOIN film_category AS FC USING(film_id) \
+  JOIN category AS C USING(category_id) \
+ GROUP BY category_id', c)
+dtf = dtf.set_index('category')
+
+name = str(random.getrandbits(128)) + ".png"
+plot = dtf.plot(kind='pie', y='count_', legend=False)
+fig = plot.get_figure()
+fig.savefig("images/"+name)
+
+
+
+print(hash)
+
